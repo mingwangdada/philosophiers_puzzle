@@ -697,6 +697,9 @@ class CompoundKeyboard extends Keyboard {
 								lastCompoundIndex = i
 							}
 							output.push(character)
+							if (isCompound && i === inputs.length - 1) {
+								endCompound(i + 1)
+							}
 						} else {
 							if (isCompound) {
 								endCompound(i)
