@@ -124,7 +124,13 @@ class Keyboard {
 				if (detectedQuote) {
 					const quoted = detectedQuote[0].slice(1, -1)
 					if (part === detectedQuote[0]) {
-						endFunction(i)
+						if (isFunction) {
+							endFunction(i)
+							if (quoted === "S") {
+								output.push("")
+								continue
+							}
+						}
 						if (quoted === "←") {
 							if (output.length > 0) {
 								output.pop()
@@ -282,6 +288,10 @@ class Keyboard {
 							output.push(character + " ")
 						} else {
 							endFunction(i)
+							if (quoted === "S") {
+								output.push("")
+								continue
+							}
 							if (character === '"fn"') {
 								if (i === parts.length - 1) {
 									output.push("[Function]")
@@ -483,7 +493,13 @@ class CompoundKeyboard extends Keyboard {
 					}
 					const quoted = detectedQuote[0].slice(1, -1)
 					if (input === detectedQuote[0]) {
-						endFunction(i)
+						if (isFunction) {
+							endFunction(i)
+							if (quoted === "S") {
+								output.push("")
+								continue
+							}
+						}
 						if (quoted === "←") {
 							if (output.length > 0) {
 								output.pop()
@@ -637,6 +653,10 @@ class CompoundKeyboard extends Keyboard {
 							output.push(character + " ")
 						} else {
 							endFunction(i)
+							if (quoted === "S") {
+								output.push("")
+								continue
+							}
 							if (character === '"fn"') {
 								if (i === inputs.length - 1) {
 									output.push("[Function]")
