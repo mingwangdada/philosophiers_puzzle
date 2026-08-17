@@ -502,8 +502,14 @@ class CompoundKeyboard extends Keyboard {
 						}
 						if (quoted === "←") {
 							if (output.length > 0) {
-								output.pop()
-								output.push("", "")
+								let rmvIndex = output.lastIndexOf(output.filter(o => o !== "").pop())
+								if (rmvIndex === -1) {
+									output.pop()
+									output.push("")
+								} else {
+									output[rmvIndex] = ""
+								}
+								output.push("")
 								continue
 							}
 						}
