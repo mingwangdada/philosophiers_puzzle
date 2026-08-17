@@ -503,6 +503,7 @@ class CompoundKeyboard extends Keyboard {
 						if (quoted === "←") {
 							if (output.length > 0) {
 								output.pop()
+								output.push("", "")
 								continue
 							}
 						}
