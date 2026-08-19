@@ -1,7 +1,7 @@
 class Character {
 	constructor(character, shift, capital) {
 		this.character = character
-		this.shift = shift??"⍰"
+		this.shift = shift??"�"
 		this.capital = capital??character
 	}
 	isEqualTo(character) {
@@ -23,7 +23,7 @@ class Keyboard {
 		for (let x = 0; x < sizeX; x++) {
 			this.pattern[x] = []
 			for (let y = 0; y < sizeY; y++) {
-				this.pattern[x][y] = new Character("⍰")
+				this.pattern[x][y] = new Character("�")
 			}
 		}
 	}
@@ -39,7 +39,7 @@ class Keyboard {
 		if (str === "\t") str = '"tab"';
 		if (str === " ") str = '"S"';
 		if (str === "\n") str = '"E"';
-		let output = [new Character("⍰"), -1, -1, -1]
+		let output = [new Character("�"), -1, -1, -1]
 		for (let x = 0; x < this.pattern.length; x++) {
 			for (let y = 0; y < this.pattern[x].length; y++) {
 				if (this.pattern[x][y].character === str) {
@@ -64,7 +64,7 @@ class Keyboard {
 			let character = charWithPos[0]
 			let posX = charWithPos[1]
 			let posY = charWithPos[2]
-			if (this.pattern[posX][posY].character === "⍰" && this.pattern[posX][posY].shift === "⍰" && this.pattern[posX][posY].capital === "⍰") {
+			if (this.pattern[posX][posY].isEqualTo(new Character("�"))) {
 				this.pattern[posX][posY] = character
 				succeedCount++
 			}
@@ -326,7 +326,7 @@ class Keyboard {
 				if (isFunction) {
 					endFunction(i)
 				}
-				output.push("⍰")
+				output.push("�")
 			}
 		}
 		return output.join("")
@@ -722,7 +722,7 @@ class CompoundKeyboard extends Keyboard {
 				if (isCompound) {
 					endCompound(i)
 				}
-				output.push("⍰")
+				output.push("�")
 			}
 		}
 		return output.join("")
@@ -912,14 +912,14 @@ function decoder(sequence) {
 		subsequence = sequence.slice(control[0].length)
 		head = head.slice(control[0].length)
 	}
-	if (keyboard.decode(head + "*") === "⍰") {
+	if (keyboard.decode(head + "*") === "�") {
 		subsequence = subsequence.slice(head.length + 1)
 		let mixedInput = (head.match(/^"[^"]*"/)??[""])[0]
 		let headChar = keyboard.returnKeyboradChar(head.slice(mixedInput.length))
 		if (headChar[3] > -1 && headChar[3] < 3) {
 			subsequence = mixedInput + keyboard.encode(headChar[0].character) + subsequence
 		} else {
-			return "⍰" + keyboard.decode(subsequence)
+			return "�" + keyboard.decode(subsequence)
 		}
 	}
 	return keyboard.decode(subsequence)
