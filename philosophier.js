@@ -733,18 +733,17 @@ class CompoundKeyboard extends Keyboard {
 		let characters = this.characterSet.map(s => s.character)
 		for (let i = 0; i < inputs.length; i++) {
 			let input = inputs[i]
-			if (characters.includes(input)) {
+			if (this.returnKeyboradChar(input)[3] === 0) {
+				if (i > 0) {
+					if (this.returnKeyboradChar(inputs[i - 1])[3] === 0) {
+						output = output.slice(0, -1)
+					}
+				}
+				output = output + input + " "
+				continue
+			} else if (characters.includes(input)) {
 				output = output + this.characterSet[characters.indexOf(input)].pattern + " "
 			} else {
-				if (this.returnKeyboradChar(input)[3] === 0) {
-					if (i > 0) {
-						if (this.returnKeyboradChar(inputs[i - 1])[3] === 0) {
-							output = output.slice(0, -1)
-						}
-					}
-					output = output + input + " "
-					continue
-				}
 				output = output	+ input
 			}
 		}
