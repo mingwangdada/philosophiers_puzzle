@@ -77,12 +77,12 @@ class Keyboard {
 		const directs = parts[index].replace(/"[↑↓←→]"/, "").match(/[↑↓←→][^↑↓←→]*/g)
 		const directors = parts[index].match(/[↑↓←→]\d{1,}/g)
 		if (!(parts[index].slice(((parts[index].match(/^"[^"]*"/)??[""])[0].length)) === "——")) {
+			if (directors.filter(d => d.startsWith("↑") || d.startsWith("↓")).length > 1 || directors.filter(d => d.startsWith("←") || d.startsWith("→")).length > 1) {
+				throw new Error("Too many directors!")
+			}
 			for (let direct of directs) {
 				const dir = direct[0]
 				let num = Number(direct.slice(1))
-				if (directors.filter(d => d.startsWith("↑") || d.startsWith("↓")).length > 1 || directors.filter(d => d.startsWith("←") || d.startsWith("→")).length > 1) {
-					throw new Error("Too many directors!")
-				}
 				switch (dir) {
 					case "↑":
 						dx -= num
@@ -442,7 +442,7 @@ class CompoundKeyboard extends Keyboard {
 		return succeedCount
 	}
 	decode(sequence) {
-		let characterSet = this.characterSet
+		const characterSet = this.characterSet
 		if (!sequence || sequence.trim() === "") return "";
 		const inputs = sequence.split("*")
 		inputs.length = inputs.length -	1
