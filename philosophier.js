@@ -1,5 +1,6 @@
 class Character {
 	constructor(character, shift, capital) {
+		if (!character) throw new Error("Character itself cannot be empty!");
 		this.character = character
 		this.shift = shift??"�"
 		this.capital = capital??character
@@ -217,6 +218,19 @@ class Keyboard {
 						if (character === '"alt"') {
 							character = "[Alternate]"
 						}
+						if (character === '"←"') {
+							if (output.length > 0) {
+								let rmvIndex = output.lastIndexOf(output.filter(o => o !== "").pop())
+								if (rmvIndex === -1) {
+									output.pop()
+									output.push("")
+								} else {
+									output[rmvIndex] = ""
+								}
+								output.push("")
+								continue
+							}
+						}
 						if (isFunction) {
 							if (character.match(/\d/)) {
 								if (output[output.length - 1].endsWith(" ")) {
@@ -279,6 +293,19 @@ class Keyboard {
 					}
 					if (character === '"alt"') {
 						character = "[Alternate]"
+					}
+					if (character === '"←"') {
+						if (output.length > 0) {
+							let rmvIndex = output.lastIndexOf(output.filter(o => o !== "").pop())
+							if (rmvIndex === -1) {
+								output.pop()
+								output.push("")
+							} else {
+								output[rmvIndex] = ""
+							}
+							output.push("")
+							continue
+						}
 					}
 					if (isFunction) {
 						if (character.match(/\d/)) {
@@ -445,7 +472,7 @@ class CompoundKeyboard extends Keyboard {
 		const characterSet = this.characterSet
 		if (!sequence || sequence.trim() === "") return "";
 		const inputs = sequence.split("*")
-		inputs.length = inputs.length -	1
+		inputs.length = inputs.length - 1
 		let output = []
 		let currentX = this.startX
 		let currentY = this.startY
@@ -589,6 +616,19 @@ class CompoundKeyboard extends Keyboard {
 						if (character === '"alt"') {
 							character = "[Alternate]"
 						}
+						if (character === '"←"') {
+							if (output.length > 0) {
+								let rmvIndex = output.lastIndexOf(output.filter(o => o !== "").pop())
+								if (rmvIndex === -1) {
+									output.pop()
+									output.push("")
+								} else {
+									output[rmvIndex] = ""
+								}
+								output.push("")
+								continue
+							}
+						}
 						if (isFunction) {
 							if (character.match(/\d/)) {
 								if (output[output.length - 1].endsWith(" ")) {
@@ -651,6 +691,19 @@ class CompoundKeyboard extends Keyboard {
 					}
 					if (character === '"alt"') {
 						character = "[Alternate]"
+					}
+					if (character === '"←"') {
+						if (output.length > 0) {
+							let rmvIndex = output.lastIndexOf(output.filter(o => o !== "").pop())
+							if (rmvIndex === -1) {
+								output.pop()
+								output.push("")
+							} else {
+								output[rmvIndex] = ""
+							}
+							output.push("")
+							continue
+						}
 					}
 					if (isFunction) {
 						if (character.match(/\d/)) {
@@ -744,7 +797,7 @@ class CompoundKeyboard extends Keyboard {
 			} else if (characters.includes(input)) {
 				output = output + this.characterSet[characters.indexOf(input)].pattern + " "
 			} else {
-				output = output	+ input
+				output = output + input
 			}
 		}
 		return output
@@ -768,46 +821,46 @@ const defaultKeyboardChars = [
 	[new Character('"tab"'), 1, 0],
 	[new Character("q", "Q", "Q"), 1, 1],
 	[new Character("w", "W", "W"), 1, 2],
-    [new Character("e", "E", "E"), 1, 3],
-    [new Character("r", "R", "R"), 1, 4],
-    [new Character("t", "T", "T"), 1, 5],
-    [new Character("y", "Y", "Y"), 1, 6],
-    [new Character("u", "U", "U"), 1, 7],
-    [new Character("i", "I", "I"), 1, 8],
-    [new Character("o", "O", "O"), 1, 9],
-    [new Character("p", "P", "P"), 1, 10],
-    [new Character("[" , "{"), 1, 11],
-    [new Character("]" , "}"), 1, 12],
-    [new Character("\\", "|"), 1, 13],
+	[new Character("e", "E", "E"), 1, 3],
+	[new Character("r", "R", "R"), 1, 4],
+	[new Character("t", "T", "T"), 1, 5],
+	[new Character("y", "Y", "Y"), 1, 6],
+	[new Character("u", "U", "U"), 1, 7],
+	[new Character("i", "I", "I"), 1, 8],
+	[new Character("o", "O", "O"), 1, 9],
+	[new Character("p", "P", "P"), 1, 10],
+	[new Character("[" , "{"), 1, 11],
+	[new Character("]" , "}"), 1, 12],
+	[new Character("\\", "|"), 1, 13],
 	[new Character('"C"'), 2, 0],
-    [new Character("a", "A", "A"), 2, 1],
-    [new Character("s", "S", "S"), 2, 2],
-    [new Character("d", "D", "D"), 2, 3],
-    [new Character("f", "F", "F"), 2, 4],
-    [new Character("g", "G", "G"), 2, 5],
-    [new Character("h", "H", "H"), 2, 6],
-    [new Character("j", "J", "J"), 2, 7],
-    [new Character("k", "K", "K"), 2, 8],
-    [new Character("l", "L", "L"), 2, 9],
-    [new Character(";", ":"), 2, 10],
-    [new Character("'", '"'), 2, 11],
-    [new Character("↑"), 2, 12],
-    [new Character('"E"'), 2, 13],
+	[new Character("a", "A", "A"), 2, 1],
+	[new Character("s", "S", "S"), 2, 2],
+	[new Character("d", "D", "D"), 2, 3],
+	[new Character("f", "F", "F"), 2, 4],
+	[new Character("g", "G", "G"), 2, 5],
+	[new Character("h", "H", "H"), 2, 6],
+	[new Character("j", "J", "J"), 2, 7],
+	[new Character("k", "K", "K"), 2, 8],
+	[new Character("l", "L", "L"), 2, 9],
+	[new Character(";", ":"), 2, 10],
+	[new Character("'", '"'), 2, 11],
+	[new Character("↑"), 2, 12],
+	[new Character('"E"'), 2, 13],
 	[new Character('"↑"'), 3, 0],
 	[new Character("z", "Z", "Z"), 3, 1],
-    [new Character("x", "X", "X"), 3, 2],
-    [new Character("c", "C", "C"), 3, 3],
-    [new Character("v", "V", "V"), 3, 4],
-    [new Character("b", "B", "B"), 3, 5],
-    [new Character("n", "N", "N"), 3, 6],
-    [new Character("m", "M", "M"), 3, 7],
-    [new Character(",", "<"), 3, 8],
-    [new Character(".", ">"), 3, 9],
-    [new Character("/", "?"), 3, 10],
-    [new Character("←"), 3, 11],
-    [new Character("↓"), 3, 12],
-    [new Character("→"), 3, 13],
-    [new Character('"ctrl"'), 4, 0],
+	[new Character("x", "X", "X"), 3, 2],
+	[new Character("c", "C", "C"), 3, 3],
+	[new Character("v", "V", "V"), 3, 4],
+	[new Character("b", "B", "B"), 3, 5],
+	[new Character("n", "N", "N"), 3, 6],
+	[new Character("m", "M", "M"), 3, 7],
+	[new Character(",", "<"), 3, 8],
+	[new Character(".", ">"), 3, 9],
+	[new Character("/", "?"), 3, 10],
+	[new Character("←"), 3, 11],
+	[new Character("↓"), 3, 12],
+	[new Character("→"), 3, 13],
+	[new Character('"ctrl"'), 4, 0],
 	[new Character('"fn"'), 4, 1],
 	[new Character('"fn"'), 4, 2],
 	[new Character('"alt"'), 4, 3],
@@ -823,30 +876,30 @@ const defaultKeyboard = new Keyboard(5, 14, "26En", 1, 1)
 defaultKeyboard.insertCharacters(defaultKeyboardChars)
 const letters = [new Character("q", "Q", "Q"),
 	new Character("w", "W", "W"),
-    new Character("e", "E", "E"),
-    new Character("r", "R", "R"),
-    new Character("t", "T", "T"),
-    new Character("y", "Y", "Y"),
-    new Character("u", "U", "U"),
-    new Character("i", "I", "I"),
-    new Character("o", "O", "O"),
-    new Character("p", "P", "P"),
-    new Character("a", "A", "A"),
-    new Character("s", "S", "S"),
-    new Character("d", "D", "D"),
-    new Character("f", "F", "F"),
-    new Character("g", "G", "G"),
-    new Character("h", "H", "H"),
-    new Character("j", "J", "J"),
-    new Character("k", "K", "K"),
-    new Character("l", "L", "L"),
+	new Character("e", "E", "E"),
+	new Character("r", "R", "R"),
+	new Character("t", "T", "T"),
+	new Character("y", "Y", "Y"),
+	new Character("u", "U", "U"),
+	new Character("i", "I", "I"),
+	new Character("o", "O", "O"),
+	new Character("p", "P", "P"),
+	new Character("a", "A", "A"),
+	new Character("s", "S", "S"),
+	new Character("d", "D", "D"),
+	new Character("f", "F", "F"),
+	new Character("g", "G", "G"),
+	new Character("h", "H", "H"),
+	new Character("j", "J", "J"),
+	new Character("k", "K", "K"),
+	new Character("l", "L", "L"),
 	new Character("z", "Z", "Z"),
-    new Character("x", "X", "X"),
-    new Character("c", "C", "C"),
-    new Character("v", "V", "V"),
-    new Character("b", "B", "B"),
-    new Character("n", "N", "N"),
-    new Character("m", "M", "M")
+	new Character("x", "X", "X"),
+	new Character("c", "C", "C"),
+	new Character("v", "V", "V"),
+	new Character("b", "B", "B"),
+	new Character("n", "N", "N"),
+	new Character("m", "M", "M")
 ]
 const UTF = [
 	new Character("\\"),
