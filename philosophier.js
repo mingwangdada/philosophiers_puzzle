@@ -5,7 +5,7 @@ class Character {
 		this.capital = capital??character
 	}
 	isEqualTo(character) {
-		return (this.character === character.character && this.shift === character.shift && this.capital === character.capital)
+		return (this.character === character.character && this.shift === character.shift && this.capital === character.capital && character instanceof Character)
 	}
 }
 class Keyboard {
