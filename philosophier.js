@@ -425,7 +425,6 @@ class Keyboard {
 				currentY = keyboardChar[2]
 				output = output + mixedInput + direct + "*"
 			}
-			
 		}
 		return output
 	}
