@@ -29,7 +29,12 @@ class Keyboard {
 		}
 	}
 	replaceCharacter(character, posX, posY) {
-		this.pattern[posX][posY] = character
+		if (this.pattern[posX][posY] instanceof Character) {
+			this.pattern[posX][posY] = character
+			return true
+		} else {
+			return false
+		}
 	}
 	returnKeyboradChar(str) {
 		if (str === "[Capital Lock]") str = '"C"';
