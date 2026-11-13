@@ -364,6 +364,7 @@ class Keyboard {
 		return output.join("")
 	}
 	encode(line) {
+		line = Array.from(line)
 		let output = ""
 		let skip = 0
 		let currentX = this.startX
@@ -446,10 +447,10 @@ class CompoundKeyboard extends Keyboard {
 			if (!this.characterSet.some(s => s.pattern === charSet[1])) {
 				for (let i = 0; i < charSet[1].length; i++) {
 					if (!this.isValidInput(this.returnKeyboradChar(charSet[1][i])[0])) {
-						console.warn(`An invalid input detected. This character '${charSet[0]}' may never be used!`)
+						console.warn(`An invalid input detected. Character(s) '${charSet[0]}' may never be used!`)
 					}
 				}
-				this.characterSet.push({character: charSet[0], pattern: charSet[1]})
+				this.characterSet.push({characters: charSet[0], pattern: charSet[1]})
 				succeedCount++
 			}
 		}
@@ -499,7 +500,7 @@ class CompoundKeyboard extends Keyboard {
 					output[i] = ""
 				}
 				output.pop()
-				output.push(find.character)
+				output = output.concat(find.characters)
 			}
 		}
 		function endFunction(index) {
@@ -786,25 +787,47 @@ class CompoundKeyboard extends Keyboard {
 	}
 	solvePattern(line) {
 		let output = ""
-		const inputs = line.slice("")
-		let characters = this.characterSet.map(s => s.character)
-		for (let i = 0; i < inputs.length; i++) {
-			let input = inputs[i]
-			if (characters.includes(input)) {
-				output = output + this.characterSet[characters.indexOf(input)].pattern + " "
-			} else if (this.returnKeyboradChar(input)[3] === 0) {
-				if (i > 0) {
-					if (this.returnKeyboradChar(inputs[i - 1])[3] === 0) {
-						output = output.slice(0, -1)
+			const inputs = line.slice("")
+			const charSets = this.characterSet.map(item => {
+				let chars = item.characters;
+				if (typeof chars === 'string') chars = Array.from(chars);
+				let pat = item.pattern;
+				if (Array.isArray(pat)) pat = pat.join("");
+				return { chars, pattern: pat, length: chars.length };
+			}).filter(item => item.length > 0).sort((a, b) => b.length - a.length);
+
+			let i = 0;
+			while (i < inputs.length) {
+				let matched = false;
+				for (let set of charSets) {
+					if (i + set.length > inputs.length) continue;
+					let sub = inputs.slice(i, i + set.length);
+					if (set.chars.every((ch, idx) => ch === sub[idx])) {
+						output += set.pattern + " ";
+						i += set.length;
+						matched = true;
+						break;
 					}
 				}
-				output = output + input + " "
-				continue
-			} else {
-				output = output + input
+				if (matched) continue;
+
+				let input = inputs[i];
+				let keyboardChar = this.returnKeyboradChar(input);
+				if (keyboardChar[3] === 0) {
+					if (i > 0) {
+						let prevInput = inputs[i - 1];
+						let prevKeyboardChar = this.returnKeyboradChar(prevInput);
+						if (prevKeyboardChar[3] === 0) {
+							output = output.slice(0, -1);
+						}
+					}
+					output += input + " ";
+				} else {
+					output += input;
+				}
+				i++;
 			}
-		}
-		return output
+			return output;
 	}
 }
 const defaultKeyboardChars = [
@@ -947,9 +970,9 @@ const UTFChars = [
 ]
 const testCharSet = []
 for (let i = 0x0000; i <= 0xffff; i++) {
-  const char = String.fromCharCode(i);
-  const escapeSeq = "\\u" + i.toString(16).toUpperCase().padStart(4, '0');
-  testCharSet.push([char, escapeSeq]);
+	const char = String.fromCharCode(i);
+	const escapeSeq = "\\u" + i.toString(16).toUpperCase().padStart(4, '0');
+	testCharSet.push([[char], escapeSeq]);
 }
 const testCompKeyboard = new CompoundKeyboard(3, 6, "Test0", 0, 1)
 testCompKeyboard.addValidInput(UTF)
